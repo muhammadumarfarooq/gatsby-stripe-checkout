@@ -7,6 +7,27 @@ import { useStaticQuery, graphql } from "gatsby"
 const stripePromise = loadStripe("pk_test_QFrPyvUMh0KEwfjjup8ekJvG00fl7ERXMy")
 
 const IndexPage = () => {
+  const data = useStaticQuery(graphql`
+    query ProductPrices{
+    prices : allStripePrice{
+      edges {
+        node {
+        product {
+          name
+          images
+          description
+        }
+          id
+          active
+          currency
+          unit_amount
+        }
+      }
+      }
+    }
+  `)
+  
+  console.log(data)
   const handleCheckoutUsingStripe = async () => {
     const stripe = await stripePromise
     
@@ -27,6 +48,19 @@ const IndexPage = () => {
       <SEO title="Home" />
       <h1>Payments using stripe checkout form</h1>
       <p>This code is about the stripe payments using stripe form not the custom form</p>
+      
+      <div className="products">
+        {data.prices.edges.map(node => {
+          const { id, product, unit_amount } = node.node
+          return (
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} key={id}>
+              <h1>{product.name}</h1>
+              <h1>$ {unit_amount / 100}</h1>
+            </div>
+          )
+        })}
+      </div>
+      
       
       <button onClick={handleCheckoutUsingStripe}>Checkout Using Stripe</button>
     
