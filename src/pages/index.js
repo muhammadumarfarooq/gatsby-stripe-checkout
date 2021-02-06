@@ -2,6 +2,7 @@ import React from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import { loadStripe } from "@stripe/stripe-js"
+import { useStaticQuery, graphql } from "gatsby"
 
 const stripePromise = loadStripe("pk_test_QFrPyvUMh0KEwfjjup8ekJvG00fl7ERXMy")
 
